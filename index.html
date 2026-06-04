@@ -287,20 +287,80 @@
     }
     .network-stat span { display: block; font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -0.5px; margin-top: 2px; }
 
-    /* ─── SEMINARE ─── */
-    .seminar-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 22px; margin-top: 50px; }
-    .seminar-card {
-      background: white; border: 1px solid var(--border); border-radius: 20px;
-      padding: 32px 28px; box-shadow: 0 1px 8px rgba(0,0,0,.06);
-      display: flex; flex-direction: column;
+    /* ─── AKKORDEON SEMINARE ─── */
+    .akk-grid { display: flex; flex-direction: column; gap: 14px; margin-top: 50px; }
+
+    .akk-card {
+      background: white; border: 1px solid var(--border); border-radius: 18px;
+      box-shadow: 0 1px 6px rgba(0,0,0,.05); cursor: pointer;
+      transition: box-shadow .25s, border-color .25s;
+      overflow: hidden;
     }
-    .seminar-tag { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .7px; color: var(--muted); margin-bottom: 16px; }
-    .seminar-icon-row { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
-    .seminar-card h3 { font-size: 18px; font-weight: 800; color: var(--text); letter-spacing: -0.4px; }
-    .seminar-card p  { font-size: 16px; color: var(--muted); line-height: 1.7; margin: 14px 0 20px; }
-    .seminar-features { list-style: none; display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
-    .seminar-features li { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; color: var(--mid); line-height: 1.6; }
-    .seminar-features li svg { width: 14px; height: 14px; fill: none; stroke: #0d9488; stroke-width: 2.2; flex-shrink: 0; margin-top: 2px; }
+    .akk-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,.09); border-color: #d8d8d8; }
+    .akk-card.akk-open { box-shadow: 0 4px 24px rgba(0,0,0,.10); border-color: #c8c8c8; }
+    .akk-featured { border-color: rgba(136,159,254,0.4); }
+    .akk-featured.akk-open { border-color: var(--lav); }
+
+    .akk-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 22px 26px; gap: 16px;
+    }
+    .akk-header-left { display: flex; align-items: center; gap: 18px; flex: 1; min-width: 0; }
+    .akk-icon { margin: 0; flex-shrink: 0; }
+    .akk-modul-tag {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .7px; color: var(--muted); display: block; margin-bottom: 4px;
+    }
+    .akk-title { font-size: 17px; font-weight: 800; color: var(--text); letter-spacing: -0.3px; margin: 0 0 5px; }
+    .akk-teaser { font-size: 13px; color: var(--muted); line-height: 1.5; margin: 0; }
+
+    .akk-toggle {
+      width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid var(--border);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      transition: background .2s, border-color .2s;
+    }
+    .akk-card:hover .akk-toggle { border-color: var(--lav); }
+    .akk-card.akk-open .akk-toggle { background: var(--black); border-color: var(--black); }
+    .akk-plus { width: 16px; height: 16px; stroke: var(--muted); transition: transform .3s, stroke .2s; }
+    .akk-card.akk-open .akk-plus { transform: rotate(45deg); stroke: white; }
+
+    /* Accordion body */
+    .akk-body { max-height: 0; overflow: hidden; transition: max-height .45s cubic-bezier(.4,0,.2,1); }
+    .akk-card.akk-open .akk-body { max-height: 1000px; }
+    .akk-body-inner { padding: 0 26px 24px; border-top: 1px solid #f0f0f0; }
+
+    .akk-cols {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 24px;
+      padding-top: 22px;
+    }
+    .akk-col-title {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .6px; color: var(--muted); margin-bottom: 12px;
+    }
+    .akk-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .akk-list li {
+      font-size: 13px; color: var(--mid); line-height: 1.55;
+      padding-left: 14px; position: relative;
+    }
+    .akk-list li::before {
+      content: '–'; position: absolute; left: 0; color: var(--mint); font-weight: 700;
+    }
+
+    .akk-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px; margin-top: 22px;
+      padding-top: 18px; border-top: 1px solid #f0f0f0;
+    }
+
+    @media (max-width: 780px) { .akk-cols { grid-template-columns: 1fr; gap: 16px; } }
+    @media (max-width: 640px) {
+      .akk-header { padding: 18px 18px; }
+      .akk-body-inner { padding: 0 18px 20px; }
+      .akk-title { font-size: 15px; }
+      .akk-teaser { display: none; }
+    }
+
+    /* ─── SEMINARE (legacy kept for digital-badge) ─── */
     .digital-badge {
       display: inline-flex; align-items: center; gap: 6px;
       background: #f0ebfd; color: #6d28d9; border: 1px solid #ddd6fe;
@@ -310,8 +370,9 @@
     .digital-badge svg { width: 11px; height: 11px; fill: none; stroke: #6d28d9; stroke-width: 2; }
     .seminar-cta {
       margin-top: auto; background: var(--black); color: white;
-      font-weight: 700; font-size: 14px; padding: 13px 0; border-radius: 30px;
-      text-decoration: none; text-align: center; display: block; transition: opacity .2s;
+      font-weight: 600; font-size: 13px; padding: 11px 28px; border-radius: 30px;
+      text-decoration: none; text-align: center; display: inline-block;
+      transition: opacity .2s; white-space: nowrap; letter-spacing: 0.01em;
     }
     .seminar-cta:hover { opacity: .82; }
     .seminar-cta.grad { background: var(--grad); }
@@ -664,77 +725,312 @@
 <section id="seminare">
   <div class="section-head">
     <p class="section-label"><span data-de>Weiterbildungsangebote</span><span data-en>Training Courses</span></p>
-    <h2 class="section-title"><span data-de>Vier Seminare. Tiefes Wissen.</span><span data-en>Four Seminars. Deep Knowledge.</span></h2>
-    <p class="section-sub"><span data-de>Jeder Kurs vermittelt praxisnahes Handwerkszeug für Ihren therapeutischen Alltag — mit kleinen Gruppen, erfahrenen Dozenten und digitaler Praxisanbindung.</span><span data-en>Each course provides hands-on tools for your therapeutic practice — with small groups, experienced instructors and digital practice integration.</span></p>
+    <h2 class="section-title"><span data-de>Vier Module. Tiefes Wissen.</span><span data-en>Four Modules. Deep Knowledge.</span></h2>
+    <p class="section-sub"><span data-de>Jedes Modul vermittelt praxisnahes Handwerkszeug — mit kleinen Gruppen, erfahrenen Dozenten und digitaler Praxisanbindung. Klicken Sie auf ein Modul für alle Details.</span><span data-en>Each module provides hands-on tools — with small groups, experienced instructors and digital integration. Click a module for full details.</span></p>
   </div>
-  <div class="seminar-grid">
 
-    <div class="seminar-card">
-      <div class="seminar-icon-row">
-        <div class="problem-icon icon-mint" style="margin:0"><svg viewBox="0 0 24 24"><path d="M8 21h12"/><path d="M3.5 5.5 5 7l2-2"/><path d="m4.5 8.5 1.5 1.5 2-2"/><path d="M5 3v3"/><path d="M19.9 18.9 22 21"/><path d="M15.657 15.657A8 8 0 1 0 5.94 9.04"/></svg></div>
-        <span class="seminar-tag"><span data-de>Modul 1</span><span data-en>Module 1</span></span>
+  <div class="akk-grid">
+
+    <!-- ─── MODUL 1: INFUSIONSTHERAPIE ─── -->
+    <div class="akk-card" onclick="toggleAkk(this)">
+      <div class="akk-header">
+        <div class="akk-header-left">
+          <div class="problem-icon icon-mint akk-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M8 21h12"/><path d="M3.5 5.5 5 7l2-2"/><path d="m4.5 8.5 1.5 1.5 2-2"/><path d="M5 3v3"/><path d="M19.9 18.9 22 21"/><path d="M15.657 15.657A8 8 0 1 0 5.94 9.04"/></svg></div>
+          <div>
+            <span class="akk-modul-tag"><span data-de>Modul 1</span><span data-en>Module 1</span></span>
+            <h3 class="akk-title"><span data-de>Infusionstherapie</span><span data-en>Infusion Therapy</span></h3>
+            <p class="akk-teaser"><span data-de>Vitalstoffe, Infusionskonzepte & klinische Anwendung in der funktionellen Praxis.</span><span data-en>Vital nutrients, infusion concepts & clinical application in functional practice.</span></p>
+          </div>
+        </div>
+        <div class="akk-toggle">
+          <svg class="akk-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
       </div>
-      <h3><span data-de>Infusionstherapie</span><span data-en>Infusion Therapy</span></h3>
-      <p><span data-de>Theoretische und praktische Grundlagen zu Vitalstoffen, Infusionskonzepten und der klinischen Anwendung in der funktionellen Praxis.</span><span data-en>Theoretical and practical fundamentals of vital nutrients, infusion concepts and clinical application in functional practice.</span></p>
-      <ul class="seminar-features">
-        <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-de>Mikronährstoff-Infusionen &amp; Indikationen</span><span data-en>Micronutrient infusions &amp; indications</span></li>
-        <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-de>Vitamin C, Glutathion, Myers-Cocktail</span><span data-en>Vitamin C, Glutathione, Myers Cocktail</span></li>
-        <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-de>Praktische Anleitungen &amp; Sicherheit</span><span data-en>Practical instructions &amp; safety</span></li>
-      </ul>
-      <span class="digital-badge"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span data-de>ORY Digital integriert</span><span data-en>ORY Digital integrated</span></span>
-      <a href="https://oryakademie.as.me/" target="_blank" rel="noopener" class="seminar-cta"><span data-de>Termin &amp; Anmeldung →</span><span data-en>Date &amp; Registration →</span></a>
+      <div class="akk-body">
+        <div class="akk-body-inner">
+          <div class="akk-cols">
+            <div class="akk-col">
+              <p class="akk-col-title"><span data-de>Was Sie lernen</span><span data-en>What you learn</span></p>
+              <ul class="akk-list">
+                <li><span data-de>Grundlagen der Orthomolekularmedizin & Vitalstofftherapie</span><span data-en>Fundamentals of orthomolecular medicine & vital substance therapy</span></li>
+                <li><span data-de>Vitamin C Hochdosis, Glutathion, Myers-Cocktail, B-Vitamine</span><span data-en>High-dose Vitamin C, Glutathione, Myers Cocktail, B vitamins</span></li>
+                <li><span data-de>Mikronährstoffe intravenös vs. oral — Wann welche Methode?</span><span data-en>Micronutrients IV vs. oral — When which method?</span></li>
+                <li><span data-de>Chelat-Therapie & Schwermetallausleitung</span><span data-en>Chelation therapy & heavy metal detox</span></li>
+              </ul>
+            </div>
+            <div class="akk-col">
+              <p class="akk-col-title"><span data-de>Sicherheit & Diagnostik</span><span data-en>Safety & diagnostics</span></p>
+              <ul class="akk-list">
+                <li><span data-de>Laborparameter vor Infusionsbeginn — was ist Pflicht?</span><span data-en>Lab parameters before infusion — what is mandatory?</span></li>
+                <li><span data-de>Indikationen, Kontraindikationen & Notfallmanagement</span><span data-en>Indications, contraindications & emergency management</span></li>
+                <li><span data-de>Hygiene, rechtliche Anforderungen & Praxisstandards</span><span data-en>Hygiene, legal requirements & practice standards</span></li>
+                <li><span data-de>G6PD-Test & Verträglichkeitsprüfung</span><span data-en>G6PD test & compatibility testing</span></li>
+              </ul>
+            </div>
+            <div class="akk-col">
+              <p class="akk-col-title"><span data-de>Individuelle Therapiekonzepte</span><span data-en>Individual therapy concepts</span></p>
+              <ul class="akk-list">
+                <li><span data-de>Protokolle nach Befund: Erschöpfung, Immundefizit, Detox</span><span data-en>Protocols by findings: fatigue, immune deficiency, detox</span></li>
+                <li><span data-de>Oxyvenierung als Ergänzung zur Infusionstherapie</span><span data-en>Oxyvenation as complement to infusion therapy</span></li>
+                <li><span data-de>Verlaufskontrolle & Therapieanpassung</span><span data-en>Follow-up monitoring & therapy adjustment</span></li>
+                <li><span data-de>Kombination mit Oral-Supplementation</span><span data-en>Combination with oral supplementation</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="akk-footer">
+            <span class="digital-badge"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span data-de>ORY Digital & ORY Analysis integriert</span><span data-en>ORY Digital & ORY Analysis integrated</span></span>
+            <a href="#termine" class="seminar-cta" onclick="event.stopPropagation();event.preventDefault();document.getElementById('termine').scrollIntoView({behavior:'smooth'})"><span data-de>Termin & Anmeldung →</span><span data-en>Date & Registration →</span></a>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="seminar-card">
-      <div class="seminar-icon-row">
-        <div class="problem-icon icon-blue" style="margin:0"><svg viewBox="0 0 24 24"><path d="M12 2a5 5 0 0 1 5 5v6a5 5 0 0 1-10 0V7a5 5 0 0 1 5-5z"/><path d="M8 22v-1a4 4 0 0 1 8 0v1"/></svg></div>
-        <span class="seminar-tag"><span data-de>Modul 2</span><span data-en>Module 2</span></span>
+    <!-- ─── MODUL 2: COLONHYDROTHERAPIE ─── -->
+    <div class="akk-card" onclick="toggleAkk(this)">
+      <div class="akk-header">
+        <div class="akk-header-left">
+          <div class="problem-icon icon-blue akk-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 2a5 5 0 0 1 5 5v6a5 5 0 0 1-10 0V7a5 5 0 0 1 5-5z"/><path d="M8 22v-1a4 4 0 0 1 8 0v1"/></svg></div>
+          <div>
+            <span class="akk-modul-tag"><span data-de>Modul 2</span><span data-en>Module 2</span></span>
+            <h3 class="akk-title"><span data-de>Colonhydrotherapie</span><span data-en>Colonhydrotherapy</span></h3>
+            <p class="akk-teaser"><span data-de>Darmgesundheit, Darmsanierung & therapeutische Durchführung von Grund auf verstehen.</span><span data-en>Understanding gut health, restoration & therapeutic application from the ground up.</span></p>
+          </div>
+        </div>
+        <div class="akk-toggle">
+          <svg class="akk-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
       </div>
-      <h3><span data-de>Colonhydrotherapie</span><span data-en>Colonhydrotherapy</span></h3>
-      <p><span data-de>Fundiertes Wissen zur Darmgesundheit, Darmsanierung und Colonhydrotherapie — von der Physiologie bis zur praktischen Durchführung.</span><span data-en>In-depth knowledge of gut health, gut restoration and colonhydrotherapy — from physiology to practical application.</span></p>
-      <ul class="seminar-features">
-        <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-de>Darm-Mikrobiom &amp; Dysbiose</span><span data-en>Gut microbiome &amp; dysbiosis</span></li>
-        <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-de>Leaky Gut &amp; Darm-Immunsystem</span><span data-en>Leaky Gut &amp; gut immune system</span></li>
-        <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-de>Therapeutische Darmsanierungsprotokolle</span><span data-en>Therapeutic gut restoration protocols</span></li>
-      </ul>
-      <span class="digital-badge"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span data-de>ORY Digital integriert</span><span data-en>ORY Digital integrated</span></span>
-      <a href="https://oryakademie.as.me/" target="_blank" rel="noopener" class="seminar-cta"><span data-de>Termin &amp; Anmeldung →</span><span data-en>Date &amp; Registration →</span></a>
+      <div class="akk-body">
+        <div class="akk-body-inner">
+          <div class="akk-cols">
+            <div class="akk-col">
+              <p class="akk-col-title"><span data-de>Was Sie lernen</span><span data-en>What you learn</span></p>
+              <ul class="akk-list">
+                <li><span data-de>Anatomie & Physiologie des Darms — funktionell betrachtet</span><span data-en>Anatomy & physiology of the gut — functionally viewed</span></li>
+                <li><span data-de>Darm-Mikrobiom, Dysbiose & ihre systemischen Folgen</span><span data-en>Gut microbiome, dysbiosis & its systemic consequences</span></li>
+                <li><span data-de>Leaky Gut, Darm-Immunsystem & Entzündungskaskaden</span><span data-en>Leaky Gut, gut immune system & inflammation cascades</span></li>
+                <li><span data-de>Verbindung Darm-Gehirn-Achse & Nervensystem</span><span data-en>Gut-brain axis & nervous system connection</span></li>
+              </ul>
+            </div>
+            <div class="akk-col">
+              <p class="akk-col-title"><span data-de>Technische Durchführung</span><span data-en>Technical application</span></p>
+              <ul class="akk-list">
+                <li><span data-de>Geräte, Ausstattung, Hygiene & rechtliche Grundlagen</span><span data-en>Equipment, hygiene & legal foundations</span></li>
+                <li><span data-de>Ablauf einer Sitzung: Vorbereitung bis Nachsorge</span><span data-en>Session flow: preparation to aftercare</span></li>
+                <li><span data-de>Indikationen, Kontraindikationen & Notfallprotokoll</span><span data-en>Indications, contraindications & emergency protocol</span></li>
+                <li><span data-de>Patientenkommunikation & Aufklärungspflicht</span><span data-en>Patient communication & duty to inform</span></li>
+              </ul>
+            </div>
+            <div class="akk-col">
+              <p class="akk-col-title"><span data-de>Therapeutische Protokolle</span><span data-en>Therapeutic protocols</span></p>
+              <ul class="akk-list">
+                <li><span data-de>Darmsanierung: Phasen, Substanzen, Begleittherapie</span><span data-en>Gut restoration: phases, substances, companion therapy</span></li>
+                <li><span data-de>Kombination mit Probiotika, Prebiotika & Nährstoffen</span><span data-en>Combination with probiotics, prebiotics & nutrients</span></li>
+                <li><span data-de>Verlaufsdiagnostik mit Stuhlanalyse & Laborwerten</span><span data-en>Progress diagnostics with stool analysis & lab values</span></li>
+                <li><span data-de>Integration in ganzheitliche Therapiekonzepte</span><span data-en>Integration into holistic therapy concepts</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="akk-footer">
+            <span class="digital-badge"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span data-de>ORY Digital integriert</span><span data-en>ORY Digital integrated</span></span>
+            <a href="#termine" class="seminar-cta" onclick="event.stopPropagation();event.preventDefault();document.getElementById('termine').scrollIntoView({behavior:'smooth'})"><span data-de>Termin & Anmeldung →</span><span data-en>Date & Registration →</span></a>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="seminar-card">
-      <div class="seminar-icon-row">
-        <div class="problem-icon icon-amber" style="margin:0"><svg viewBox="0 0 24 24"><path d="M14.5 2v17.5c0 1.4-1.1 2.5-2.5 2.5h0c-1.4 0-2.5-1.1-2.5-2.5V2"/><path d="M8.5 2h7"/><path d="M14.5 16h-5"/></svg></div>
-        <span class="seminar-tag"><span data-de>Modul 3 · Kernkurs</span><span data-en>Module 3 · Core Course</span></span>
+    <!-- ─── MODUL 3: LABORDIAGNOSTIK ─── -->
+    <div class="akk-card akk-featured" onclick="toggleAkk(this)">
+      <div class="akk-header">
+        <div class="akk-header-left">
+          <div class="problem-icon icon-amber akk-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M14.5 2v17.5c0 1.4-1.1 2.5-2.5 2.5h0c-1.4 0-2.5-1.1-2.5-2.5V2"/><path d="M8.5 2h7"/><path d="M14.5 16h-5"/></svg></div>
+          <div>
+            <span class="akk-modul-tag"><span data-de>Modul 3 · Kernkurs</span><span data-en>Module 3 · Core Course</span></span>
+            <h3 class="akk-title"><span data-de>Labordiagnostik</span><span data-en>Laboratory Diagnostics</span></h3>
+            <p class="akk-teaser"><span data-de>Von Referenzwert-Grenzen zu therapeutischen Entscheidungen — der Unterschied, der Therapien wirksam macht.</span><span data-en>From reference value limits to therapeutic decisions — the difference that makes therapies effective.</span></p>
+          </div>
+        </div>
+        <div class="akk-toggle">
+          <svg class="akk-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
       </div>
-      <h3><span data-de>Labordiagnostik</span><span data-en>Laboratory Diagnostics</span></h3>
-      <p><span data-de>Strukturierte Laborauswertung für die funktionelle Medizin — von Referenzwert-Grenzen zu therapeutischen Entscheidungen.</span><span data-en>Structured lab analysis for functional medicine — from reference value limits to therapeutic decisions.</span></p>
-      <ul class="seminar-features">
-        <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-de>Mikronährstoffe, Hormone &amp; Schilddrüse</span><span data-en>Micronutrients, hormones &amp; thyroid</span></li>
-        <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-de>Entzündungsmarker &amp; Immunparameter</span><span data-en>Inflammation markers &amp; immune parameters</span></li>
-        <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-de>Funktionelle Referenzbereiche</span><span data-en>Functional reference ranges</span></li>
-      </ul>
-      <span class="digital-badge"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span data-de>ORY Analysis direkt eingebunden</span><span data-en>ORY Analysis directly integrated</span></span>
-      <a href="https://oryakademie.as.me/" target="_blank" rel="noopener" class="seminar-cta grad"><span data-de>Termin &amp; Anmeldung →</span><span data-en>Date &amp; Registration →</span></a>
+      <div class="akk-body">
+        <div class="akk-body-inner">
+          <div class="akk-cols">
+            <div class="akk-col">
+              <p class="akk-col-title"><span data-de>Was Sie lernen</span><span data-en>What you learn</span></p>
+              <ul class="akk-list">
+                <li><span data-de>Funktionelle vs. konventionelle Referenzbereiche</span><span data-en>Functional vs. conventional reference ranges</span></li>
+                <li><span data-de>Mikronährstoff-Diagnostik: Vitamine, Mineralien, Spurenelemente</span><span data-en>Micronutrient diagnostics: vitamins, minerals, trace elements</span></li>
+                <li><span data-de>Hormonstatus, Schilddrüse & Nebennierenachse</span><span data-en>Hormone status, thyroid & adrenal axis</span></li>
+                <li><span data-de>Entzündungsparameter & Immundiagnostik</span><span data-en>Inflammation parameters & immune diagnostics</span></li>
+              </ul>
+            </div>
+            <div class="akk-col">
+              <p class="akk-col-title"><span data-de>Befundauswertung</span><span data-en>Result interpretation</span></p>
+              <ul class="akk-list">
+                <li><span data-de>Muster erkennen: Zusammenhänge im Befund lesen</span><span data-en>Pattern recognition: reading connections in results</span></li>
+                <li><span data-de>Mitochondrienmarker: CoQ10, L-Carnitin, organische Säuren</span><span data-en>Mitochondrial markers: CoQ10, L-carnitine, organic acids</span></li>
+                <li><span data-de>Darmdiagnostik im Labor: Stuhl, Zoflora, Permeabilität</span><span data-en>Gut diagnostics in lab: stool, zonulin, permeability</span></li>
+                <li><span data-de>Toxikologie & Schwermetall-Screening</span><span data-en>Toxicology & heavy metal screening</span></li>
+              </ul>
+            </div>
+            <div class="akk-col">
+              <p class="akk-col-title"><span data-de>Therapieplanung & Kommunikation</span><span data-en>Therapy planning & communication</span></p>
+              <ul class="akk-list">
+                <li><span data-de>Vom Befund zum Therapieprotokoll — strukturiert vorgehen</span><span data-en>From result to therapy protocol — structured approach</span></li>
+                <li><span data-de>Verlaufskontrollen: Was messen, wann, wie oft?</span><span data-en>Follow-up checks: what to measure, when, how often?</span></li>
+                <li><span data-de>Laborbefunde patientengerecht erklären</span><span data-en>Explaining lab results to patients</span></li>
+                <li><span data-de>ORY Analysis Plattform: Befunde digital auswerten</span><span data-en>ORY Analysis platform: digitally evaluate results</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="akk-footer">
+            <span class="digital-badge"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span data-de>ORY Analysis direkt eingebunden</span><span data-en>ORY Analysis directly integrated</span></span>
+            <a href="#termine" class="seminar-cta grad" onclick="event.stopPropagation();event.preventDefault();document.getElementById('termine').scrollIntoView({behavior:'smooth'})"><span data-de>Termin & Anmeldung →</span><span data-en>Date & Registration →</span></a>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="seminar-card">
-      <div class="seminar-icon-row">
-        <div class="problem-icon icon-lav" style="margin:0"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-        <span class="seminar-tag"><span data-de>Modul 4</span><span data-en>Module 4</span></span>
+    <!-- ─── MODUL 4: COACHING-WAHRNEHMUNG ─── -->
+    <div class="akk-card" onclick="toggleAkk(this)">
+      <div class="akk-header">
+        <div class="akk-header-left">
+          <div class="problem-icon icon-lav akk-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+          <div>
+            <span class="akk-modul-tag"><span data-de>Modul 4</span><span data-en>Module 4</span></span>
+            <h3 class="akk-title"><span data-de>Coaching-Wahrnehmung</span><span data-en>Coaching Awareness</span></h3>
+            <p class="akk-teaser"><span data-de>Emotionale & mentale Faktoren in die ganzheitliche Therapiebegleitung integrieren.</span><span data-en>Integrating emotional & mental factors into holistic therapy support.</span></p>
+          </div>
+        </div>
+        <div class="akk-toggle">
+          <svg class="akk-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </div>
       </div>
-      <h3><span data-de>Coaching-Wahrnehmung</span><span data-en>Coaching Awareness</span></h3>
-      <p><span data-de>Integration emotionaler und mentaler Faktoren in die ganzheitliche Therapiebegleitung — für Therapeuten, die Patienten auf allen Ebenen unterstützen.</span><span data-en>Integration of emotional and mental factors in holistic therapy support — for therapists who want to support patients on all levels.</span></p>
-      <ul class="seminar-features">
-        <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-de>Mind-Body-Medizin &amp; Nervensystem</span><span data-en>Mind-body medicine &amp; nervous system</span></li>
-        <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-de>Trauma-informierte Begleitung</span><span data-en>Trauma-informed support</span></li>
-        <li><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span data-de>Emotionale Wurzeln körperlicher Beschwerden</span><span data-en>Emotional roots of physical complaints</span></li>
-      </ul>
-      <span class="digital-badge"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span data-de>ORY Digital integriert</span><span data-en>ORY Digital integrated</span></span>
-      <a href="https://oryakademie.as.me/" target="_blank" rel="noopener" class="seminar-cta"><span data-de>Termin &amp; Anmeldung →</span><span data-en>Date &amp; Registration →</span></a>
+      <div class="akk-body">
+        <div class="akk-body-inner">
+          <div class="akk-cols">
+            <div class="akk-col">
+              <p class="akk-col-title"><span data-de>Was Sie lernen</span><span data-en>What you learn</span></p>
+              <ul class="akk-list">
+                <li><span data-de>Psycho-Neuro-Immunologie: Wie Emotionen Körper beeinflussen</span><span data-en>Psycho-neuro-immunology: how emotions affect the body</span></li>
+                <li><span data-de>Autonomes Nervensystem & seine Regulation</span><span data-en>Autonomic nervous system & its regulation</span></li>
+                <li><span data-de>Stressbiologie: Cortisol, HPA-Achse, Schlafarchitektur</span><span data-en>Stress biology: cortisol, HPA axis, sleep architecture</span></li>
+                <li><span data-de>Ich-Kräfte & Selbstverwirklichung als Therapieziel</span><span data-en>Self-forces & self-realisation as therapy goal</span></li>
+              </ul>
+            </div>
+            <div class="akk-col">
+              <p class="akk-col-title"><span data-de>Trauma & Begleitung</span><span data-en>Trauma & support</span></p>
+              <ul class="akk-list">
+                <li><span data-de>Trauma-informiertes Arbeiten in der Praxis</span><span data-en>Trauma-informed practice in clinical work</span></li>
+                <li><span data-de>Polyvagal-Theorie & Nervensystem-Regulation</span><span data-en>Polyvagal theory & nervous system regulation</span></li>
+                <li><span data-de>Emotionale Trigger & körperliche Symptommuster</span><span data-en>Emotional triggers & physical symptom patterns</span></li>
+                <li><span data-de>Somatic Experiencing Grundprinzipien</span><span data-en>Somatic experiencing basic principles</span></li>
+              </ul>
+            </div>
+            <div class="akk-col">
+              <p class="akk-col-title"><span data-de>Praxiskommunikation</span><span data-en>Practice communication</span></p>
+              <ul class="akk-list">
+                <li><span data-de>Gesprächsführung auf allen vier Ebenen (körper, mental, emotional, Ich)</span><span data-en>Conversation on all four levels (physical, mental, emotional, self)</span></li>
+                <li><span data-de>Grenzen setzen & therapeutische Beziehung gestalten</span><span data-en>Setting boundaries & shaping the therapeutic relationship</span></li>
+                <li><span data-de>Patienten zur Eigenverantwortung begleiten</span><span data-en>Guiding patients toward self-responsibility</span></li>
+                <li><span data-de>Selbstfürsorge für Therapeuten</span><span data-en>Self-care for therapists</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="akk-footer">
+            <span class="digital-badge"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span data-de>ORY Digital integriert</span><span data-en>ORY Digital integrated</span></span>
+            <a href="#termine" class="seminar-cta" onclick="event.stopPropagation();event.preventDefault();document.getElementById('termine').scrollIntoView({behavior:'smooth'})"><span data-de>Termin & Anmeldung →</span><span data-en>Date & Registration →</span></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end akk-grid -->
+
+  <!-- ─── EXTRA-MODUL: OXYVENIERUNG ─── -->
+  <div style="margin-top:14px;">
+    <div class="akk-card akk-extra" onclick="toggleAkk(this)">
+      <div class="akk-header">
+        <div class="akk-header-left">
+          <div class="problem-icon akk-icon" style="background:#f0fdf4;margin:0;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>
+          </div>
+          <div>
+            <span class="akk-modul-tag" style="color:#16a34a;">
+              <span data-de>Extra-Modul · Halbtagesformat · Zertifizierung</span>
+              <span data-en>Extra Module · Half-day format · Certification</span>
+            </span>
+            <h3 class="akk-title"><span data-de>Oxyvenierung — Zertifizierte Geräteanwendung</span><span data-en>Oxyvenation — Certified Device Application</span></h3>
+            <p class="akk-teaser"><span data-de>Konzept, Durchführung & Sicherheit der Oxyvenierungstherapie — inkl. Zertifikat für die Geräteanwendung.</span><span data-en>Concept, application & safety of oxyvenation therapy — incl. certificate for device use.</span></p>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+          <span style="background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap;">
+            <span data-de>½ Tag</span><span data-en>½ Day</span>
+          </span>
+          <div class="akk-toggle">
+            <svg class="akk-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="akk-body">
+        <div class="akk-body-inner">
+          <div class="akk-cols">
+            <div class="akk-col">
+              <p class="akk-col-title"><span data-de>Was Sie lernen</span><span data-en>What you learn</span></p>
+              <ul class="akk-list">
+                <li><span data-de>Physiologische Grundlagen der Oxyvenierung</span><span data-en>Physiological foundations of oxyvenation</span></li>
+                <li><span data-de>Wirkungsmechanismus: Sauerstoff-Ozon-Therapie</span><span data-en>Mode of action: oxygen-ozone therapy</span></li>
+                <li><span data-de>Integration in das E4-Therapiemodell</span><span data-en>Integration into the E4 therapy model</span></li>
+                <li><span data-de>Kombination mit Infusionstherapie</span><span data-en>Combination with infusion therapy</span></li>
+              </ul>
+            </div>
+            <div class="akk-col">
+              <p class="akk-col-title"><span data-de>Geräteanwendung & Sicherheit</span><span data-en>Device application & safety</span></p>
+              <ul class="akk-list">
+                <li><span data-de>Aufbau & Bedienung des Oxyvenierungsgeräts</span><span data-en>Setup & operation of the oxyvenation device</span></li>
+                <li><span data-de>Sicherheitsstandards & Hygieneprotokoll</span><span data-en>Safety standards & hygiene protocol</span></li>
+                <li><span data-de>Indikationen & absolute Kontraindikationen</span><span data-en>Indications & absolute contraindications</span></li>
+                <li><span data-de>Dosierung, Sitzungsdauer & Frequenz</span><span data-en>Dosage, session duration & frequency</span></li>
+              </ul>
+            </div>
+            <div class="akk-col">
+              <p class="akk-col-title"><span data-de>Zertifizierung & Praxis</span><span data-en>Certification & practice</span></p>
+              <ul class="akk-list">
+                <li><span data-de>Zertifikat für die Geräteanwendung nach Abschluss</span><span data-en>Device application certificate upon completion</span></li>
+                <li><span data-de>Rechtliche Voraussetzungen: Arzt / Heilpraktiker</span><span data-en>Legal requirements: physician / naturopath</span></li>
+                <li><span data-de>Praxisvorbereitung: Patientenaufklärung & Dokumentation</span><span data-en>Practice preparation: patient consent & documentation</span></li>
+                <li><span data-de>PDF-Kursmaterial im Voraus verfügbar</span><span data-en>PDF course material available in advance</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="akk-footer">
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+              <span style="background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;display:inline-flex;align-items:center;gap:5px;">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                <span data-de>Zertifikat inklusive</span><span data-en>Certificate included</span>
+              </span>
+              <span style="background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;display:inline-flex;align-items:center;gap:5px;">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                <span data-de>Halbtagesformat</span><span data-en>Half-day format</span>
+              </span>
+              <span style="background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;display:inline-flex;align-items:center;gap:5px;">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                <span data-de>Kleine Gruppe</span><span data-en>Small group</span>
+              </span>
+            </div>
+            <a href="#termine" class="seminar-cta" style="background:#16a34a;min-width:200px;" onclick="event.stopPropagation();event.preventDefault();document.getElementById('termine').scrollIntoView({behavior:'smooth'})">
+              <span data-de>Termin & Anmeldung →</span><span data-en>Date & Registration →</span>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+
 </section>
-
 
 <!-- ═══════════ 3 SCHRITTE ═══════════ -->
 <section style="background:rgba(255,255,255,0.5);">
@@ -1086,6 +1382,14 @@
     document.getElementById('btn-en').classList.toggle('active', lang === 'en');
     document.documentElement.lang = lang;
   }
+  function toggleAkk(card) {
+    const isOpen = card.classList.contains('akk-open');
+    // Close all
+    document.querySelectorAll('.akk-card.akk-open').forEach(c => c.classList.remove('akk-open'));
+    // Open clicked (unless it was already open)
+    if (!isOpen) card.classList.add('akk-open');
+  }
+
   function toggleFaq(btn) {
     const answer = btn.nextElementSibling;
     const isOpen = btn.classList.contains('open');
