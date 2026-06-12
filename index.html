@@ -523,9 +523,91 @@
     @media (hover: none) {
       .btn-grad:hover, .btn-ghost:hover, .nav-cta:hover { transform: none; }
     }
+
+    /* ─── SCROLL-FORTSCHRITT ─── */
+    .scroll-progress {
+      position: fixed; top: 0; left: 0; height: 3px; width: 0;
+      background: var(--grad); z-index: 300; border-radius: 0 2px 2px 0;
+    }
+
+    /* ─── NAV: ANKER-LINKS + SCROLLED ─── */
+    .nav-links { display: flex; gap: 26px; align-items: center; }
+    .nav-links a {
+      font-size: 13px; font-weight: 600; color: var(--muted);
+      text-decoration: none; padding: 4px 0; position: relative;
+      transition: color .2s; white-space: nowrap;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; left: 0; bottom: -1px;
+      width: 100%; height: 2px; background: var(--grad); border-radius: 2px;
+      transform: scaleX(0); transform-origin: left; transition: transform .25s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+    .nav-links a.active::after { transform: scaleX(1); }
+    @media (max-width: 1180px) { .nav-links { display: none; } }
+    nav { transition: height .25s ease, box-shadow .25s ease; }
+    body.scrolled nav { height: 54px; box-shadow: 0 4px 24px rgba(0,0,0,.07); }
+
+    /* ─── HERO-SHRINK ─── */
+    #hero-title { transform-origin: center top; will-change: transform, opacity; }
+
+    /* ─── SCROLL-REVEAL ─── */
+    .reveal {
+      opacity: 0; transform: translateY(26px);
+      transition: opacity .7s cubic-bezier(.21,.61,.35,1), transform .7s cubic-bezier(.21,.61,.35,1),
+                  box-shadow .25s ease, border-color .25s ease;
+    }
+    .reveal.in { opacity: 1; transform: none; }
+
+    /* ─── KARTEN-HOVER (dezent) ─── */
+    .problem-card:hover, .e4-item:hover, .network-card:hover,
+    .testi-card:hover, .team-card:hover, .quality-card:hover {
+      box-shadow: 0 8px 28px rgba(0,0,0,.09); border-color: #d8d8d8;
+    }
+
+    /* ─── ZAHLEN-LEISTE ─── */
+    .stats-bar {
+      display: grid; grid-template-columns: repeat(4,1fr); gap: 20px;
+      max-width: 980px; margin: 0 auto; padding: 56px 5% 48px;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-size: clamp(2.2rem, 4vw, 3rem); font-weight: 800;
+      letter-spacing: -1.5px; line-height: 1.1;
+      background: var(--grad);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .stat-label {
+      font-size: 12px; font-weight: 600; color: var(--muted);
+      margin-top: 8px; text-transform: uppercase; letter-spacing: .6px; line-height: 1.5;
+    }
+    @media (max-width: 640px) {
+      .stats-bar { grid-template-columns: repeat(2,1fr); gap: 30px 12px; padding: 40px 5% 32px; }
+    }
+
+    /* ─── QUALITÄT & STANDARDS ─── */
+    .quality-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 18px; margin-top: 50px; }
+    .quality-card {
+      background: white; border: 1px solid var(--border); border-radius: 18px;
+      padding: 26px 22px; box-shadow: 0 1px 6px rgba(0,0,0,.05);
+    }
+    .quality-card h4 { font-size: 14px; font-weight: 700; color: var(--text); margin: 16px 0 8px; }
+    .quality-card p  { font-size: 14px; color: var(--muted); line-height: 1.7; }
+    @media (max-width: 980px) { .quality-grid { grid-template-columns: repeat(2,1fr); } }
+    @media (max-width: 640px) { .quality-grid { grid-template-columns: 1fr; } }
+
+    /* ─── REDUZIERTE BEWEGUNG ─── */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+      #hero-title { transform: none !important; opacity: 1 !important; }
+      nav { transition: none; }
+    }
   </style>
 </head>
 <body class="lang-de">
+
+<div class="scroll-progress" id="scroll-progress" aria-hidden="true"></div>
 
 <!-- ═══════════ NAV ═══════════ -->
 <nav>
@@ -536,6 +618,12 @@
       <span class="logo-sub">Akademie</span>
     </div>
   </a>
+  <div class="nav-links" aria-label="Hauptnavigation">
+    <a href="#ansatz"><span data-de>Ansatz</span><span data-en>Approach</span></a>
+    <a href="#seminare"><span data-de>Seminare</span><span data-en>Seminars</span></a>
+    <a href="#qualitaet"><span data-de>Qualität</span><span data-en>Quality</span></a>
+    <a href="#faq">FAQ</a>
+  </div>
   <div class="nav-right">
     <a href="tel:+493088663373" class="nav-contact">
       <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.97a16 16 0 0 0 6.06 6.06l1.27-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
@@ -565,7 +653,7 @@
     <span data-en>ORY Akademie · Holistic Training</span>
   </div>
 
-  <h1>
+  <h1 id="hero-title">
     <span data-de>Medizin, die die<br /><span class="grad-text">Ursache behandelt</span></span>
     <span data-en>Medicine that treats<br /><span class="grad-text">the root cause</span></span>
   </h1>
@@ -620,6 +708,27 @@
   <span class="partner-tag">DHS – Diagnostic HealthCare Solutions</span>
   <span class="partner-tag">CTL Labor</span>
   <span class="partner-tag">Oxyvenierung</span>
+</div>
+
+
+<!-- ═══════════ ZAHLEN-LEISTE ═══════════ -->
+<div class="stats-bar">
+  <div class="stat">
+    <div class="stat-num" data-count="5">5</div>
+    <div class="stat-label"><span data-de>Seminarmodule</span><span data-en>Seminar Modules</span></div>
+  </div>
+  <div class="stat">
+    <div class="stat-num" data-count="4">4</div>
+    <div class="stat-label"><span data-de>Säulen im E4-Modell</span><span data-en>Pillars in the E4 Model</span></div>
+  </div>
+  <div class="stat">
+    <div class="stat-num" data-count="3">3</div>
+    <div class="stat-label"><span data-de>Ebenen der Ursachensuche</span><span data-en>Levels of Root-Cause Analysis</span></div>
+  </div>
+  <div class="stat">
+    <div class="stat-num" data-count="2">2</div>
+    <div class="stat-label"><span data-de>Formate: vor Ort &amp; online</span><span data-en>Formats: On-site &amp; Online</span></div>
+  </div>
 </div>
 
 
@@ -1085,6 +1194,44 @@
 
 </section>
 
+
+<!-- ═══════════ QUALITÄT & STANDARDS ═══════════ -->
+<section id="qualitaet">
+  <div class="section-head centered">
+    <p class="section-label"><span data-de>Wissenschaftlicher Anspruch</span><span data-en>Scientific Standards</span></p>
+    <h2 class="section-title">
+      <span data-de>Standards, an denen wir uns messen lassen</span>
+      <span data-en>Standards we hold ourselves to</span>
+    </h2>
+    <p class="section-sub" style="margin:0 auto;">
+      <span data-de>Medizinische Weiterbildung verlangt Sorgfalt. Diese vier Prinzipien gelten in jedem unserer Seminare — ohne Ausnahme.</span>
+      <span data-en>Medical training demands diligence. These four principles apply in every one of our seminars — without exception.</span>
+    </p>
+  </div>
+  <div class="quality-grid">
+    <div class="quality-card">
+      <div class="problem-icon icon-blue" style="margin:0;"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
+      <h4><span data-de>Evidenzorientierte Inhalte</span><span data-en>Evidence-Oriented Content</span></h4>
+      <p><span data-de>Unsere Curricula orientieren sich an aktueller Fachliteratur und etablierten Standards der funktionellen Medizin und Labordiagnostik — und werden laufend aktualisiert.</span><span data-en>Our curricula follow current scientific literature and established standards of functional medicine and lab diagnostics — and are continuously updated.</span></p>
+    </div>
+    <div class="quality-card">
+      <div class="problem-icon icon-amber" style="margin:0;"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <h4><span data-de>Sicherheit zuerst</span><span data-en>Safety First</span></h4>
+      <p><span data-de>Indikationen, Kontraindikationen, Hygiene und Notfallmanagement sind fester Bestandteil jedes Moduls — nicht optionales Zusatzwissen.</span><span data-en>Indications, contraindications, hygiene and emergency management are an integral part of every module — not optional extras.</span></p>
+    </div>
+    <div class="quality-card">
+      <div class="problem-icon icon-mint" style="margin:0;"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg></div>
+      <h4><span data-de>Dokumentierte Curricula</span><span data-en>Documented Curricula</span></h4>
+      <p><span data-de>Strukturierte Lehrpläne, Kursmaterial und Teilnahmebestätigung für jedes Seminar. Ausgewählte Kurse sind durch den BCHT anerkannt.</span><span data-en>Structured curricula, course materials and certificates of attendance for every seminar. Selected courses are recognised by the BCHT.</span></p>
+    </div>
+    <div class="quality-card">
+      <div class="problem-icon icon-lav" style="margin:0;"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg></div>
+      <h4><span data-de>Kleine Gruppen, echte Praxis</span><span data-en>Small Groups, Real Practice</span></h4>
+      <p><span data-de>Begrenzte Teilnehmerzahl für supervidierte Übungen, individuelle Betreuung und Raum für fachliche Rückfragen aus Ihrem Praxisalltag.</span><span data-en>Limited participant numbers for supervised exercises, individual support and room for professional questions from your daily practice.</span></p>
+    </div>
+  </div>
+</section>
+
 <!-- ═══════════ 3 SCHRITTE ═══════════ -->
 <section style="background:rgba(255,255,255,0.5);">
   <div class="section-head centered">
@@ -1460,6 +1607,100 @@
     const l = b.id === 'btn-en' ? 'en' : 'de';
     localStorage.setItem('ory-lang', l);
   }));
+
+  /* ─── Dynamik: Scroll-Effekte ─── */
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const progressBar = document.getElementById('scroll-progress');
+  const heroTitle = document.getElementById('hero-title');
+  const heroBadge = document.querySelector('.hero-badge');
+  const heroSub = document.querySelector('.hero-sub');
+  let scrollTick = false;
+
+  function onScroll() {
+    const y = window.scrollY;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    if (progressBar) progressBar.style.width = (max > 0 ? (y / max) * 100 : 0) + '%';
+    document.body.classList.toggle('scrolled', y > 10);
+    if (!reduceMotion && heroTitle) {
+      const p = Math.min(y / 380, 1);
+      heroTitle.style.transform = 'scale(' + (1 - p * 0.18) + ') translateY(' + (p * 18) + 'px)';
+      heroTitle.style.opacity = 1 - p * 0.45;
+      if (heroBadge) heroBadge.style.opacity = 1 - p * 0.8;
+      if (heroSub) heroSub.style.opacity = 1 - p * 0.6;
+    }
+    scrollTick = false;
+  }
+  window.addEventListener('scroll', () => {
+    if (!scrollTick) { requestAnimationFrame(onScroll); scrollTick = true; }
+  }, { passive: true });
+  onScroll();
+
+  /* Reveal beim Scrollen — gestaffelt pro Container */
+  const revealEls = document.querySelectorAll(
+    '.section-head, .problem-card, .e4-item, .akk-card, .network-card, ' +
+    '.team-card, .testi-card, .step, .quality-card, .stat, .faq-item, .digital-feat'
+  );
+  revealEls.forEach(el => el.classList.add('reveal'));
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    revealEls.forEach(el => el.classList.add('in'));
+  } else {
+    const revealIO = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const el = e.target;
+        const siblings = Array.from(el.parentElement.children).filter(c => c.classList.contains('reveal'));
+        const idx = siblings.indexOf(el);
+        el.style.transitionDelay = Math.min(Math.max(idx, 0) * 70, 350) + 'ms';
+        el.classList.add('in');
+        revealIO.unobserve(el);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(el => revealIO.observe(el));
+  }
+
+  /* Zahlen-Leiste: Count-up */
+  const counters = document.querySelectorAll('.stat-num[data-count]');
+  function animateCount(el) {
+    const target = parseInt(el.dataset.count, 10);
+    const dur = 1100;
+    const start = performance.now();
+    function tick(now) {
+      const p = Math.min((now - start) / dur, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(eased * target);
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    counters.forEach(el => { el.textContent = el.dataset.count; });
+  } else {
+    const countIO = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { animateCount(e.target); countIO.unobserve(e.target); }
+      });
+    }, { threshold: 0.5 });
+    counters.forEach(el => countIO.observe(el));
+  }
+
+  /* Scrollspy: aktiven Nav-Link markieren */
+  const spyLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+  if (spyLinks.length && 'IntersectionObserver' in window) {
+    const spyMap = new Map();
+    spyLinks.forEach(a => {
+      const sec = document.querySelector(a.getAttribute('href'));
+      if (sec) spyMap.set(sec, a);
+    });
+    const spyIO = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        spyLinks.forEach(a => a.classList.remove('active'));
+        const link = spyMap.get(e.target);
+        if (link) link.classList.add('active');
+      });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    spyMap.forEach((_, sec) => spyIO.observe(sec));
+  }
 </script>
 </body>
 </html>
