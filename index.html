@@ -1641,21 +1641,36 @@
     '.team-card, .testi-card, .step, .quality-card, .stat, .faq-item, .digital-feat'
   );
   revealEls.forEach(el => el.classList.add('reveal'));
-  if (reduceMotion || !('IntersectionObserver' in window)) {
+  let revealIOActive = false;
+  if (!reduceMotion && 'IntersectionObserver' in window) {
+    try {
+      const revealIO = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (!e.isIntersecting) return;
+          const el = e.target;
+          const siblings = Array.from(el.parentElement.children).filter(c => c.classList.contains('reveal'));
+          const idx = siblings.indexOf(el);
+          el.style.transitionDelay = Math.min(Math.max(idx, 0) * 70, 350) + 'ms';
+          el.classList.add('in');
+          revealIO.unobserve(el);
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+      revealEls.forEach(el => revealIO.observe(el));
+      revealIOActive = true;
+    } catch (e) { revealIOActive = false; }
+  }
+  if (!revealIOActive) {
     revealEls.forEach(el => el.classList.add('in'));
   } else {
-    const revealIO = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (!e.isIntersecting) return;
-        const el = e.target;
-        const siblings = Array.from(el.parentElement.children).filter(c => c.classList.contains('reveal'));
-        const idx = siblings.indexOf(el);
-        el.style.transitionDelay = Math.min(Math.max(idx, 0) * 70, 350) + 'ms';
-        el.classList.add('in');
-        revealIO.unobserve(el);
+    // Sicherheitsnetz: Inhalte dürfen niemals dauerhaft unsichtbar bleiben
+    const revealNet = setInterval(() => {
+      const pending = document.querySelectorAll('.reveal:not(.in)');
+      if (!pending.length) { clearInterval(revealNet); return; }
+      pending.forEach(el => {
+        const r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight + 60 && r.bottom > -60) el.classList.add('in');
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-    revealEls.forEach(el => revealIO.observe(el));
+    }, 1500);
   }
 
   /* Zahlen-Leiste: Count-up */
